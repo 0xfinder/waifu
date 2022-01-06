@@ -26,7 +26,7 @@ client.on('ready', async () => {
         commandsDir: path.join(__dirname, 'commands'),
         featuresDir: path.join(__dirname, 'events'),
         typeScript: true,
-        testServers: ['923555005460520990'],
+        testServers: ['923555005460520990', '696641419078795284'],
     })
 })
 

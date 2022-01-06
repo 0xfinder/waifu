@@ -4,6 +4,7 @@ const reqString = {
     type: String,
     required: true
 }
+
 const welcomeSchema = new Schema({
     // Guild ID
     _id: reqString,
