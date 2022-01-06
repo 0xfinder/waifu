@@ -1,6 +1,5 @@
-import { Client, TextChannel, Message, MessageEmbed, MessageSelectMenu } from "discord.js";
+import { Client, TextChannel } from "discord.js";
 import pokemonSchema from "../models/pokemon-schema";
-import mongoose, { Schema } from 'mongoose';
 
 const pokemonData = {} as {
     // name: [channel, message]
@@ -9,7 +8,7 @@ const pokemonData = {} as {
 
 export default (client: Client) => {
     client.on('messageCreate', async (message) => {
-        const { guild, id, author, embeds, channelId } = message
+        const { guild, author, embeds, channelId } = message
 
         // Filters
         if (!guild || author.id != '438057969251254293' || embeds.length < 1) return;
