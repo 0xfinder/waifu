@@ -28,6 +28,8 @@ client.on('ready', async () => {
         typeScript: true,
         testServers: ['923555005460520990', '696641419078795284'],
     })
+
+    client.user?.setActivity('with your mom', { type: 'PLAYING' })
 })
 
 client.login(process.env.TOKEN)

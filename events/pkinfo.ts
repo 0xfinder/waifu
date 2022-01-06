@@ -13,6 +13,7 @@ export default (client: Client) => {
         // Filters
         if (!guild || author.id != '438057969251254293' || embeds.length < 1) return;
 
+        // if (channelId != '882452780961386496') return;
         // Destructure embed
         const { type, title, description, url, color, timestamp, fields, thumbnail, image, video, author: embed_author, provider, footer } = embeds[0];
 
@@ -25,6 +26,14 @@ export default (client: Client) => {
             // .mypkinfo
             if (!embed_author.name.includes('Lv')) return;
 
+            // Check if embed is .mypkinfo
+            if (!fields.find(function (field, index) {
+                if (field.name == 'Lock Guarded')
+                    return true;
+            })?.value.split(' ')[0]) {
+                return;
+            }
+
             let embed_author_array = embed_author.name.split(' ');
             let shiny = '';
             if (embed_author_array[0] == '★') {
@@ -35,7 +44,7 @@ export default (client: Client) => {
 
             let results = await pokemonSchema.findOne({ name: pokemonName });
             if (!results) {
-                channel.send("Pokemon not in database. Please run `.pkinfo <pokemon>` to add it.");
+                // channel.send("Pokemon not in database. Please run `.pkinfo <pokemon>` to add it.");
                 return;
             }
 
@@ -150,6 +159,7 @@ export default (client: Client) => {
                 let results = await pokemonSchema.findById(pokemonId);
 
                 if (!results) {
+                    /*
                     // Add pokemon data to database
                     const pokemonInfo = {} as {
                         Id: String,
@@ -221,6 +231,8 @@ export default (client: Client) => {
 
                     // Update results with newly added data
                     results = await pokemonSchema.findById(pokemonId);
+                    */
+                    return;
                 }
 
                 const { name, generation, type, height, weight, baseStats, ability, hiddenAbility, location, rarity, genderRatio, eggGroup } = results
