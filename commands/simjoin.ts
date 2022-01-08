@@ -1,8 +1,8 @@
 import { ICommand } from "wokcommands";
 
 export default {
-    category: 'testing',
-    description: 'simulates  a join',
+    category: 'Testing',
+    description: 'Simulates  a join',
 
     slash: 'both',
     testOnly: true,

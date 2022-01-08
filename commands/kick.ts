@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 
 export default {
     category: 'Moderation',
-    description: 'Bans a user',
+    description: 'Kicks a user',
 
     requireRoles: true,
 
@@ -19,13 +19,13 @@ export default {
     callback: ({ message, interaction, args }) => {
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         if (!target) {
-            return 'Please tag someone to ban.'
+            return 'Please tag someone to kick.'
         }
 
-        if (!target.bannable) {
+        if (!target.kickable) {
             return {
                 custom: true,
-                content: 'Cannot ban that user',
+                content: 'Cannot kick that user',
                 ephemeral: true
             }
         }
@@ -33,14 +33,11 @@ export default {
         args.shift()
         const reason = args.join(' ')
 
-        target.ban({
-            reason,
-            days: 7
-        })
+        target.kick(reason)
 
         return {
             custom: true,
-            content: `You banned <@${target.id}>`,
+            content: `You kicked <@${target.id}>`,
             ephemeral: true
         }
     }

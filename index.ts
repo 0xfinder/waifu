@@ -15,18 +15,13 @@ const client = new DiscordJS.Client({
 
 client.on('ready', async () => {
     console.log("Bot is ready")
-    await mongoose.connect(
-        process.env.MONGO_URI || '',
-        {
-            keepAlive: true
-        }
-    )
 
     new WOKCommands(client, {
         commandsDir: path.join(__dirname, 'commands'),
         featuresDir: path.join(__dirname, 'events'),
         typeScript: true,
-        testServers: ['923555005460520990', '696641419078795284'],
+        testServers: ['923555005460520990', '696641419078795284', '928872810879778856'],
+        mongoUri: process.env.MONGO_URI
     })
 
     client.user?.setActivity('with your mom', { type: 'PLAYING' })

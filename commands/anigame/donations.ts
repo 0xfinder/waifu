@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js'
+import { GuildMember, MessageEmbed, User } from 'discord.js'
 import { ICommand } from "wokcommands";
 import donationsSchema from '../../models/donations-schema';
 
@@ -20,10 +20,12 @@ export default {
             return 'Please use this command within a server.'
         }
 
-        let data = donationsData[message.author.id]
+        const target = message ? message.author as User : interaction.member?.user as User
+
+        let data = donationsData[target.id]
 
         if (!data) {
-            const results = await donationsSchema.findById(message.author.id)
+            const results = await donationsSchema.findById(target.id)
             if (!results) {
                 return 'You are not registered.'
             }
@@ -34,16 +36,22 @@ export default {
 
         const embed = new MessageEmbed()
             .setDescription(`**${parseInt(data[1]).toLocaleString()}**`)
-            .setTitle(`Donations for ${message.author.username}#${message.author.discriminator}`)
+            .setTitle(`Donations for ${target.username}#${target.discriminator}`)
             .setColor(9567999)
             .setAuthor({
-                name: `${message.author.username}`,
-                iconURL: `${message.author.displayAvatarURL()}`
+                name: `${target.username}`,
+                iconURL: `${target.displayAvatarURL()}`
             })
 
-        await message.reply({
-            embeds: [embed]
-        })
+        if (!message) {
+            interaction.reply({
+                embeds: [embed]
+            })
+        } else {
+            await message.reply({
+                embeds: [embed]
+            })
+        }
     }
 
 } as ICommand

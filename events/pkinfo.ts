@@ -34,6 +34,7 @@ export default (client: Client) => {
                 return;
             }
 
+            // Name of pokemon and shiny check
             let embed_author_array = embed_author.name.split(' ');
             let shiny = '';
             if (embed_author_array[0] == '★') {
@@ -54,10 +55,18 @@ export default (client: Client) => {
             data = pokemonData[_id] = [name, generation, type, height, weight, baseStats, ability, hiddenAbility, location, rarity, genderRatio, eggGroup]
 
             // Gender
-            const gender = fields.find(function (field, index) {
+            let gender = fields.find(function (field, index) {
                 if (field.name == 'Gender')
                     return true;
             })?.value.split(' ')[0];
+
+            if (gender?.trim().toLowerCase() == 'female') {
+                gender = ' ♀️'
+            } else if (gender?.trim().toLowerCase() == 'male') {
+                gender = ' ♂️'
+            } else {
+                gender = ''
+            }
 
             // IVs: HP Atk Def SpA SpD Spe
             let pkmnIVs = fields.find(function (field, index) {
@@ -79,13 +88,25 @@ export default (client: Client) => {
                     return true;
             })?.value
 
-            const boolHiddenAbility = hiddenAbility.includes(pkmnAbility);
-
-            let hidden_ability = '';
-            if (boolHiddenAbility == true) {
-                hidden_ability = "HA"
-            } else {
-                hidden_ability = "NHA"
+            // If pokemon has no HA, check if 1 or more abilities -> if yes, write ability, if no, don't include
+            // if pokemon has HA, check if ability is HA, if yes -> write HA, if no -> check if there are more than 1 abilities
+            let ability_message = '';
+            if (hiddenAbility.toLowerCase().includes('none')) {
+                if (ability.split('/').length > 1) {
+                    ability_message = ` · ${pkmnAbility} · `
+                } else if (ability.split('/').length <= 1) {
+                    ability_message = ' · '
+                }
+            } else if (!hiddenAbility.toLowerCase().includes('none')) {
+                if (hiddenAbility.includes(pkmnAbility)) {
+                    ability_message = ' · HA · '
+                } else {
+                    if (ability.split('/').length > 1) {
+                        ability_message = ` · ${pkmnAbility} NHA· `
+                    } else if (ability.split('/').length <= 1) {
+                        ability_message = ' · NHA · '
+                    }
+                }
             }
 
             // IV category and percentage calculation
@@ -132,7 +153,7 @@ export default (client: Client) => {
                 .addFields([
                     {
                         name: 'Summary',
-                        value: `${shiny}${name} · ${gender} · ${pkmnIVsCopy.join('/')} · ${nature} · ${pkmnAbility} (${hidden_ability}) · ${percentage}% · HP ${hpType} ${hpDamage}`,
+                        value: `${shiny}${name}${gender} · ${pkmnIVsCopy.join('/')} · ${nature}${ability_message}${percentage}% · HP ${hpType} ${hpDamage}`,
                         inline: false
                     }
                 ])
