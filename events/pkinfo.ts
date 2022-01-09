@@ -102,7 +102,7 @@ export default (client: Client) => {
                     ability_message = ' · HA · '
                 } else {
                     if (ability.split('/').length > 1) {
-                        ability_message = ` · ${pkmnAbility} NHA· `
+                        ability_message = ` · ${pkmnAbility} NHA · `
                     } else if (ability.split('/').length <= 1) {
                         ability_message = ' · NHA · '
                     }
@@ -153,7 +153,7 @@ export default (client: Client) => {
                 .addFields([
                     {
                         name: 'Summary',
-                        value: `${shiny}${name}${gender} · ${pkmnIVsCopy.join('/')} · ${nature}${ability_message}${percentage}% · HP ${hpType} ${hpDamage}`,
+                        value: `${shiny}${name}${gender} · ${pkmnIVsCopy.join('/')} · ${percentage}% · ${nature}${ability_message}HP ${hpType} ${hpDamage}`,
                         inline: false
                     }
                 ])
