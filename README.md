@@ -9,5 +9,3 @@ Myuu
 
 Anigame
     - Clan donation tracker
-
-Demo Link: https://youtu.be/1OpTNpqZGQY
